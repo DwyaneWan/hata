@@ -1,0 +1,13 @@
+# Change Log on Missing Data
+QS Related rankings:
+if QS_ranking == N.A. --> Equals to niche
+
+if QS Scores == N.A. --> Median of the columns
+
+if athletics == N.A. --> Grade of student_life
+
+if campus/party/food == N.A. --> Grade of student_life
+
+remove empty column u "campus_life"
+
+For subject ranking files, remove rows if the school is not ranked for taht subject
