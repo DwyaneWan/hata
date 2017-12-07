@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<style>
+.bar1 {
+  fill: #3498db;
+  opacity: 0.5;
+}
+
+.bar1:hover {
+  fill: #2ecc71;
+}
+
+.bar2 {
+  fill: #d81a1a;
+  opacity: 0.5;
+}
+
+.bar2:hover {
+  fill: #2ecc71;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.legend {
+    padding: 5px;
+    font: 10px sans-serif;
+    background: yellow;
+    box-shadow: 2px 2px 1px #888;
+}
+
+.tooltip {
+    background: #eee;
+    box-shadow: 0 0 5px #999999;
+    color: #333;
+    font-size: 12px;
+    left: 130px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 95px;
+    z-index: 10;
+    display: block;
+    opacity: 0;
+  }
+
+
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Floating (Span) Chart</title>
+
+</head>
+
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var data=[
+     {"university": "Stanford University", "male": 52,"all": 100, "student_population":7000},
+     {"university": "Massachusetts Institute of Technology", "male": 54,"all": 100, "student_population":4492},
+     {"university": "Harvard University", "male": 53,"all": 100, "student_population":7138},
+     {"university": "Yale University", "male": 51,"all": 100, "student_population":5509},
+     {"university": "Rice University", "male": 53,"all": 100, "student_population":3863},
+     {"university": "Princeton University", "male": 52,"all": 100, "student_population":5277},
+     {"university": "University of Pennsylvania", "male": 48,"all": 100, "student_population":10406},
+     {"university": "Brown University", "male": 48,"all": 100, "student_population":6318},
+     {"university": "Bowdoin College", "male": 50,"all": 100, "student_population":17940},
+     {"university": "California Institute of Technology", "male": 61,"all": 100, "student_population":1001},
+     {"university": "Columbia University", "male": 53,"all": 100, "student_population":7253},
+     {"university": "Duke University", "male": 51,"all": 100, "student_population":6611}
+    ];
+
+    var margin = {top: 50, right: 50, bottom: 50, left: 100},
+        width = 900 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var y = d3.scale.ordinal()
+        .rangeRoundBands([0, height], .08);
+
+    var x = d3.scale.linear()
+        .range([0,width]);
+
+    var z = d3.scale.linear()
+        .rangeRound([0, height-30], .08);
+
+    y.domain(data.map(function(d) { return d.university; }));
+    z.domain([1, d3.max(data,function(d){return d.student_population;})]);
+    //x.domain([d3.min(data,function(d){return d.from;}), d3.max(data,function(d){return d.to;})]);
+    x.domain([0, 100]);
+
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(15);
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+        //.innerTickSize(-width)
+        //.outerTickSize(0)
+        //.tickPadding(10);
+
+    var line = d3.svg.line()
+    .y(function(d) { return yScale(d.y); });
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+          .append("text")
+          .attr("x", width-75)
+          .attr("dx", ".71em")
+          .attr("dy", "-.71em")
+          .text("Student Population %");
+
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+
+      svg.selectAll(".line")
+          .data(data)
+          .enter().append("line")
+          .attr("x1", 0)
+          //.attr("y1", 100)
+          .attr("y1", function(d) { return z(d.student_population)+y.rangeBand()/6; })
+          .attr("x2", width)
+          //.attr("y2", 100)
+          .attr("y2", function(d) { return z(d.student_population)+y.rangeBand()/6; })
+          .attr("stroke-width", 2)
+          .attr("stroke", "black");
+
+
+      // add bar and sat range on the bar
+      var bar = svg.selectAll(".g")
+                    .data(data)
+                    .enter()
+                    .append("g")
+
+      bar.append("rect")
+      .attr("class", "bar1")
+      //.attr("y", function(d) { return y(d.university); })
+      .attr("y", function(d) { return z(d.student_population); })
+      //.attr("height", y.rangeBand())
+      .attr("height", y.rangeBand()/3)
+      //.attr("x", function(d) { return x(d.from); })
+      .attr("width", function(d) { return x(d.male) });
+
+      bar.append("rect")
+      .attr("class", "bar2")
+      //.attr("y", function(d) { return y(d.university); })
+      .attr("y", function(d) { return z(d.student_population); })
+      //.attr("height", y.rangeBand())
+      .attr("height", y.rangeBand()/3)
+      .attr("x", function(d) { return x(d.male); })
+      .attr("width", function(d) { return x(d.all)-x(d.male) });
+
+      bar.append("text")
+          .attr("class", "value")
+          //.attr("x",function(d) { return x(d.from); })
+          .attr("x",function(d) { return x(0); })
+          .attr("y", function(d) { return z(d.student_population)+y.rangeBand()/6; })
+          .attr("text-anchor", "begin")
+          .attr("dy", "0.5em")
+          .attr("dx", "0.5em")
+          .style("fill", "white")
+          .style("font" ,"8px sans-serif")
+          .text(function(d) { return (d.male + "%"); });
+
+      bar.append("text")
+          .attr("class", "value")
+          .attr("x",function(d) { return x(100); })
+          .attr("y", function(d) { return z(d.student_population)+y.rangeBand()/6; })
+          .attr("text-anchor", "end")
+          .attr("dy", "0.5em")
+          .attr("dx", "-0.5em")
+          .style("fill", "white")
+          .style("font" ,"8px sans-serif")
+          .text(function(d) { return (d.all - d.male + "%"); },);
+
+
+        // add legend for male and female
+        var legend = svg.append("g")
+          .attr("class", "legend")
+
+        legend
+          .append("rect")
+          .attr("x", width-margin.left)
+          .attr("y", -10)
+          .attr("width", 10)
+          .attr("height", 10)
+          .style("fill", function(d) {
+            return '#3498db';
+          })
+
+        legend
+          .append("text")
+          .attr("x", width-margin.left+15)
+          .attr("y", 0)
+          .text("Male");
+
+        legend
+          .append("rect")
+          .attr("x", width-margin.left)
+          .attr("y", 1)
+          .attr("width", 10)
+          .attr("height", 10)
+          .style("fill", function(d) {
+            return 'red';
+          })
+
+        legend
+          .append("text")
+          .attr("x", width-margin.left+15)
+          .attr("y", 11)
+          .text("Female");
+
+        // Tooltip for mouseover
+        var tooltip = d3.select("body")
+        .append('div')
+        .attr('class', 'tooltip');
+
+        tooltip.append('div')
+        .attr('class', 'university');
+        tooltip.append('div')
+        .attr('class', 'malefemale');
+        tooltip.append('div')
+        .attr('class', 'studentpop');
+
+        svg.selectAll(".bar1")
+        .on('mouseover', function(d) {
+
+            tooltip.select('.university').html("<b>" + d.university + "</b>");
+            tooltip.select('.malefemale').html("<b>Male: " + d.male + "% and Female: " + (d.all-d.male) + "%</b>" );
+            tooltip.select('.studentpop').html("<b>Student size: " + d.student_population + "</b>" );
+            tooltip.style('display', 'block');
+            tooltip.style('opacity',2);
+
+        })
+        .on('mousemove', function(d) {
+            tooltip.style('top', (d3.event.layerY + 10) + 'px')
+            .style('left', (d3.event.layerX - 25) + 'px');
+        })
+        .on('mouseout', function() {
+            tooltip.style('display', 'none');
+            tooltip.style('opacity',0);
+        });
+
+        svg.selectAll(".bar2")
+        .on('mouseover', function(d) {
+
+            tooltip.select('.university').html("<b>" + d.university + "</b>");
+            tooltip.select('.malefemale').html("<b>Male: " + d.male + "% and Female: " + (d.all-d.male) + "%</b>" );
+            tooltip.select('.studentpop').html("<b>Student size: " + d.student_population + "</b>" );
+            tooltip.style('display', 'block');
+            tooltip.style('opacity',2);
+
+        })
+        .on('mousemove', function(d) {
+            tooltip.style('top', (d3.event.layerY + 10) + 'px')
+            .style('left', (d3.event.layerX - 25) + 'px');
+        })
+        .on('mouseout', function() {
+            tooltip.style('display', 'none');
+            tooltip.style('opacity',0);
+        });
+
+
+</script>
+</body>
+</html>
