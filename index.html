@@ -18,9 +18,34 @@
 <body>
 <!--   <div id="select_subject"><label>Subject: </label></div>
   <div id="select_State"><label>State: </label></div> -->
+  <div class="tour" id="tour">
+    <div class="logo">
+        <img src="./img/logo.png" height="55px">
+      </div>
+
+
+    <div class="tour_container">
+      <div class="introduction">
+        <p>COLLEGERANK is a new information visualization tool of university rankings. You can unfold main-attributes to explore more information under sub-attributes of each category.</p>
+      </div>
+      <div class="tour1">
+        <img src="./img/tour1.png"  height="57px">
+      </div>
+      <div class="tour2">
+        <img src="./img/tour2.png"  height="576px">
+      </div>
+        <button onclick="gotit()" class="gotit" >Got it</button>
+    </div>
+
+  </div>
+
+
   <div class="logo">
     <img src="./img/logo.png" alt="logo" height="55px">
   </div>
+
+
+
   <div class="container">
     <div class="filter">
               <div class="filter_label">
@@ -84,7 +109,11 @@
 
 <script>
 
+  function gotit(){
+    document.getElementById("tour").remove();
 
+    
+  }
 
   var margin = {top: 100, right: 0, bottom: 20, left: 120},
     width = 1240 - margin.left - margin.right,
@@ -92,9 +121,9 @@
     height = 730 - margin.top - margin.bottom;
   var count = 0;
   var column_id = ["select_column0","select_column1","select_column2","select_column3","select_column4","select_column5"]
-// var all_colors = ["rgba(255,97,110,1)", "rgba(255,103,113,1)",  "rgba(255,109,115,1)", "rgba(255,117,119,1)",  "rgba(255,122,120,1)", "rgba(255,130,125,1)", "rgba(255,137,128,1)", "rgba(255,143,130,1)",  "rgba(255,149,133,1)", "rgba(255,156,136,1)",  "rgba(255,163,140,1)", "rgba(255,170,143,1)", "rgba(255,177,146,1)", "rgba(255,184,150,1)", "rgba(255,190,152,1)", "rgba(255,197,155,1)", "rgba(255,204,158,1)", "rgba(255,210,161,1)", "rgba(255,217,164,1)", "rgba(255,223,167,1)"]
+var all_colors = ["rgba(255,97,110,1)", "rgba(255,103,113,1)",  "rgba(255,109,115,1)", "rgba(255,117,119,1)",  "rgba(255,122,120,1)", "rgba(255,130,125,1)", "rgba(255,137,128,1)", "rgba(255,143,130,1)",  "rgba(255,149,133,1)", "rgba(255,156,136,1)",  "rgba(255,163,140,1)", "rgba(255,170,143,1)", "rgba(255,177,146,1)", "rgba(255,184,150,1)", "rgba(255,190,152,1)", "rgba(255,197,155,1)", "rgba(255,204,158,1)", "rgba(255,210,161,1)", "rgba(255,217,164,1)", "rgba(255,223,167,1)"]
 
-  var all_colors = ["rgba(255,97,110,0.95)", "rgba(255,103,113,0.9)",  "rgba(255,109,115,0.85)", "rgba(255,117,119,0.8)",  "rgba(255,122,120,0.75)", "rgba(255,130,125,0.70)", "rgba(255,137,128,0.65)", "rgba(255,143,130,0.6)",  "rgba(255,149,133,0.55)", "rgba(255,156,136,0.5)",  "rgba(255,163,140,0.45)", "rgba(255,170,143,0.40)", "rgba(255,177,146,0.35)", "rgba(255,184,150,0.30)", "rgba(255,190,152,0.25)", "rgba(255,197,155,0.25)", "rgba(255,204,158,0.25)", "rgba(255,210,161,0.25)", "rgba(255,217,164,0.25)", "rgba(255,223,167,0.25)"]
+  // var all_colors = ["rgba(255,97,110,1)", "rgba(255,103,113,0.95)",  "rgba(255,109,115,0.9)", "rgba(255,117,119,0.85)",  "rgba(255,122,120,0.8)", "rgba(255,130,125,0.75)", "rgba(255,137,128,0.7)", "rgba(255,143,130,0.65)",  "rgba(255,149,133,0.6)", "rgba(255,156,136,0.55)",  "rgba(255,163,140,0.5)", "rgba(255,170,143,0.45)", "rgba(255,177,146,0.)", "rgba(255,184,150,0.4)", "rgba(255,190,152,0.4)", "rgba(255,197,155,0.4)", "rgba(255,204,158,0.4)", "rgba(255,210,161,0.4)", "rgba(255,217,164,0.4)", "rgba(255,223,167,0.4)"]
 
   var highlight_color = ["#ED7457","#FE938C","#FEC8C1","#EDB698","#FCDF1F","#FFE1A8","#D8EFBC","#74B498","#9B9DD8","#723D46"]
 
