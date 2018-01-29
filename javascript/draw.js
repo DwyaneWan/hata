@@ -14,9 +14,6 @@ function draw(university, number) {
     });
 
     // clear preview svg
-    // d3.selectAll("svg").transition()
-    //       .style("opacity","0.4")
-    //       .duration(600).each("end", removesvg)
     d3.select('svg').remove();
 
     svg = d3.select(".mainview").append("svg")
@@ -420,34 +417,7 @@ function draw(university, number) {
         .selectAll('.tick')
         .on('click',select_university)
 
-    var count = 0;
-    // var fo1 =g1.append('foreignObject')
-    //       .attr({
-    //             'x': "-15px",
-    //             'y': "-40px",
-    //             'width': "10px"
-    //         });
-    // var button1 = fo1.filter(function(d,i){
-    //                 if(i!=0) return d;
-    //               })
-    //             .append('xhtml:button')
-    //             .attr('class','expand_button')
-    //             .append('text')
-    //             .text("+")
-
-    // var fo2 =g2.append('foreignObject')
-    //       .attr({
-    //             'x': "-15px",
-    //             'y': "-40px",
-    //             'width': "10px"
-    //         });
-    // var button2 = fo2.filter(function(d,i){
-    //                 if(i!=0) return d;
-    //               })
-    //             .append('xhtml:button')
-    //             .attr('class','expand_button')
-    //             .append('text')
-    //             .text("+")                   
+    var count = 0;                  
 
     d3.selectAll('.expand_button').on('click',function(d,i){
       return clickMe(i)
